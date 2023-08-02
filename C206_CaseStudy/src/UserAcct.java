@@ -1,28 +1,28 @@
 
-public class UserAcct extends Info implements Database{
+public class UserAcct{
+    
+	private String name;
+	private int contactnum;
+	private String UserID;
 	
-	private String userID;
-	private int userPass;
-	
-	public UserAcct(String name, int ContactNum, String eventName, String Date ,String userID,int userPass) {
-		super(name, ContactNum, eventName, Date);
-		this.userID = userID;
-		this.userPass = userPass;
+	public UserAcct(String name, int contactnum, String userID) {
+		super();
+		this.name = name;
+		this.contactnum = contactnum;
+		UserID = userID;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public int getContactnum() {
+		return contactnum;
 	}
 
 	public String getUserID() {
-		return userID;
-	}
-
-	public int getUserPass() {
-		return userPass;
+		return UserID;
 	}
 	
-	public boolean login(String accNum, int pass) {
-		if( accNum.equals(userID) && pass == userPass) {
-			return true;
-		}else {
-			return false;
-		}
-	}
+
 }
