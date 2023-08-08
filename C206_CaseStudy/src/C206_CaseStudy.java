@@ -86,6 +86,7 @@ public class C206_CaseStudy {
 			return;
 		}
 		UserList.add(UA) ;
+		System.out.println("New user has been added");
 	}
 
 
@@ -128,6 +129,7 @@ public class C206_CaseStudy {
 			if (checkname.equalsIgnoreCase(UserList.get(i).getName())) {      
 					
 				UserList.remove(UserList.get(i));
+				System.out.println("User has been deleted");
 					return(true);
 			}else {
 				return(false);
