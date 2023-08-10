@@ -9,7 +9,6 @@ public class C206_CaseStudy {
 		ArrayList<AdministratorAcct> AdminList = new ArrayList<AdministratorAcct>();
 		ArrayList<String> eventList = new ArrayList<>();
 
-
 		UserList.add(new UserAcct("Alice", 87551131, "", "", "1124", 1234));
 		UserList.add(new UserAcct("Bob", 97526548, "Cycle To Makan! @ Gardens By The Bay", "08/07/2023", "1124", 1234));
 		AdminList.add(new AdministratorAcct("Ali", 94672354, "1124", 1234));
