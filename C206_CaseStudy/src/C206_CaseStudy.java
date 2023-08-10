@@ -2,19 +2,21 @@ import java.util.ArrayList;
 
 public class C206_CaseStudy {
 
+
 	public static void main(String[] args) {
 
 		ArrayList<UserAcct> UserList = new ArrayList<UserAcct>();
 		ArrayList<AdministratorAcct> AdminList = new ArrayList<AdministratorAcct>();
+		ArrayList<String> eventList = new ArrayList<>();
 
-		UserList.add(new UserAcct("Alice", 87551131, "The Little Pore of Singapore Cycling Tour", "07", "Alice1124", 1234));
-		UserList.add(new UserAcct("Bob", 97891432, "The Little Pore of Singapore Cycling Tour", "07", "Bob1124", 1234));
-		UserList.add(new UserAcct("A", 87551131, "The Little Pore of Singapore Cycling Tour", "07", "A1", 1234));
-		UserList.add(new UserAcct("B", 97891432, "The Little Pore of Singapore Cycling Tour", "07", "B1", 1234));
-		UserList.add(new UserAcct("C", 87551131, "", "", "C1", 1234));
-		UserList.add(new UserAcct("D", 97891432, "", "", "D1", 1234));
+
+		UserList.add(new UserAcct("Alice", 87551131, "", "", "1124", 1234));
+		UserList.add(new UserAcct("Bob", 97526548, "Cycle To Makan! @ Gardens By The Bay", "08/07/2023", "1124", 1234));
 		AdminList.add(new AdministratorAcct("Ali", 94672354, "1124", 1234));
-		AdminList.add(new AdministratorAcct("Cheng", 86544567,  "123e", 4321));
+		eventList.add("The Little Pore of Singapore Cycling Tour");
+		eventList.add("Cycle To Makan! @ Gardens By The Bay");
+		eventList.add("National Bikers Weekend 2023");
+
 
 		int option = -1;
 
@@ -26,13 +28,13 @@ public class C206_CaseStudy {
 			if (option == 1) {
 				UserAcct loginAcct = getUserLoginAcc(UserList);
 				if(loginAcct != null) {
-					runUserProcess(loginAcct);
+					runUserProcess(loginAcct, eventList);
 				}
 
 			} else if (option == 2) {
 				AdministratorAcct loginAcct = getAdminLogicAccount(AdminList);
 				if(loginAcct != null) {
-					runAdminProcess(UserList);
+					runAdminProcess(UserList, eventList);
 				}
 
 			} else if (option == 3) {
@@ -45,7 +47,7 @@ public class C206_CaseStudy {
 
 	}
 
-	private static void runUserProcess(UserAcct loginAcct) {
+	private static void runUserProcess(UserAcct loginAcct, ArrayList<String> eventList) {
 		int Useroption = 0;
 
 		while (Useroption != 3) {
@@ -53,8 +55,8 @@ public class C206_CaseStudy {
 			Useroption = Helper.readInt("Enter choice > ");
 
 			if (Useroption == 1) {
-				C206_CaseStudy.EventMenu();
-				inputDetails(loginAcct);
+				C206_CaseStudy.EventMenu(eventList);
+				RegisterEvents(loginAcct, eventList);
 
 			} else if (Useroption == 2) {				
 				deleteEvent(loginAcct);
@@ -85,11 +87,9 @@ public class C206_CaseStudy {
 			System.out.println("Incorrect User ID or Password");
 		}
 		return loginAcct;
-
-
 	}
 
-	private static void runAdminProcess(ArrayList<UserAcct> UserList) {
+	private static void runAdminProcess(ArrayList<UserAcct> UserList, ArrayList<String> eventList) {
 		int Adminoption = 0;
 
 		while (Adminoption != 2) {
@@ -97,8 +97,8 @@ public class C206_CaseStudy {
 			Adminoption = Helper.readInt("Enter choice > ");
 
 			if (Adminoption == 1) {	
-				C206_CaseStudy.EventMenu();
-				C206_CaseStudy.viewAllEvent(UserList);
+				C206_CaseStudy.EventMenu(eventList);
+				C206_CaseStudy.viewAllEvent(UserList, eventList);
 
 			} else if (Adminoption == 2) {				
 				System.out.println("Logging out.");
@@ -147,12 +147,15 @@ public class C206_CaseStudy {
 		Helper.line(115, "-");
 	}
 
-	public static void EventMenu() {
+	public static void EventMenu(ArrayList<String> eventList) {
 		C206_CaseStudy.setHeader("EVENT");
-		System.out.println("1. The Little Pore of Singapore Cycling Tour");
-		System.out.println("2. Cycle To Makan! @ Gardens By The Bay");
-		System.out.println("3. National Bikers Weekend 2023");
+		String output = "";
+		for (String event : eventList) {
+			output += String.format("%s\n", event);
+		}
+		System.out.println(output);
 		Helper.line(115, "-");
+
 	}
 
 	public static void Adminmenu() {
@@ -167,178 +170,114 @@ public class C206_CaseStudy {
 		System.out.println(header);
 		Helper.line(115, "-");
 	}
-	
-	public static String showAvailability(boolean isAvailableSlot) {
-		String avail;
-		
-		if(isAvailableSlot == true) {
-			avail = "Yes";
-		}else {
-			avail = "No";
-		}
-		return avail;
-	}
 
-	public static int option1 = 4;
+
+	public static int option1 = 0;
 	public static int option2 = 0;
 	public static int option3 = 0;
-	
-	//================================= Option 1 View (CRUD - Read) =================================
-	public static void viewAllEvent(ArrayList<UserAcct> UserList) {
 
+	//================================= Option ViewAllUsersRegisterEvent (CRUD - Read) =================================
+	public static String retrieveAllEvent(ArrayList<UserAcct> UserList) {
+		String output = "";
+		for (int i = 0; i < UserList.size(); i++) {
+
+			output += String.format("%-10s %-30s %-10s %-10s %-20s\n", UserList.get(i).getName(),
+					UserList.get(i).getContactNum(), UserList.get(i).getEventName(), UserList.get(i).getDate(),
+					UserList.get(i).getUserID(), UserList.get(i).getUserPass());
+
+		}
+		return output;
+	}
+
+	public static void viewAllEvent(ArrayList<UserAcct> UserList, ArrayList<String> eventList) {
 		String output = "";	
-		boolean CheckEvent = false;
-		int FindEvent = Helper.readInt("Enter a Event > ");
-
+		String FindEvent = Helper.readString("Enter a Event > ");
+		C206_CaseStudy.setHeader(FindEvent);
+		output += String.format("%-10s %-20s %-50s %-15s\n", "BIKER", "CONTACT NUMBER", "EVENT NAME", "DATE");
 
 		for(UserAcct i : UserList) {
-			if(FindEvent == 1 && i.getEventName().equalsIgnoreCase("The Little Pore of Singapore Cycling Tour")) {
-				CheckEvent = true;
-				if(option1 == 5) {	
-					i.setAvailableSlot(false);
-					output += String.format("%-10s %-20s %-50s %-15s %-20s\n", "BIKER", "CONTACT NUMBER", "EVENT NAME", "DATE", "AVAILABLE SLOT");
-					output += String.format("%-10s %-20d %-50s %-15s %-20s\n", i.getName(), i.getContactNum(), i.getEventName(), i.getDate(), C206_CaseStudy.showAvailability(i.getAvailableSlot()));
-				}else{
-					output += String.format("%-10s %-20s %-50s %-15s %-20s\n", "BIKER", "CONTACT NUMBER", "EVENT NAME", "DATE", "AVAILABLE SLOT");
-					output += String.format("%-10s %-20d %-50s %-15s %-20s\n", i.getName(), i.getContactNum(), i.getEventName(), i.getDate(), C206_CaseStudy.showAvailability(i.getAvailableSlot()));	
+			for(String event : eventList) {
+				if(FindEvent.equalsIgnoreCase(event) && i.getEventName().equalsIgnoreCase(FindEvent)) {
+
+
+					output += String.format("%-10s %-20d %-50s %-15s\n", i.getName(), i.getContactNum(), i.getEventName(), i.getDate());
 				}
-				
-			}else if(FindEvent == 2 && i.getEventName().equalsIgnoreCase("Cycle To Makan! @ Gardens By The Bay")) {
-				CheckEvent = true;	
-				if(option2 == 5) {
-					i.setAvailableSlot(false);
-					output += String.format("%-10s %-20s %-50s %-15s %-20s\n", "BIKER", "CONTACT NUMBER", "EVENT NAME", "DATE", "AVAILABLE SLOT");
-					output += String.format("%-10s %-20d %-50s %-15s %-20s\n", i.getName(), i.getContactNum(), i.getEventName(), i.getDate(), C206_CaseStudy.showAvailability(i.getAvailableSlot()));	
-				}else {
-					output += String.format("%-10s %-20s %-50s %-15s %-20s\n", "BIKER", "CONTACT NUMBER", "EVENT NAME", "DATE", "AVAILABLE SLOT");
-					output += String.format("%-10s %-20d %-50s %-15s %-20s\n", i.getName(), i.getContactNum(), i.getEventName(), i.getDate(), C206_CaseStudy.showAvailability(i.getAvailableSlot()));	
-				}			
-			}else if(FindEvent == 3 && i.getEventName().equalsIgnoreCase("National Bikers Weekend 2023")) {
-				CheckEvent = true;			
-				if(option3 == 5) {
-					i.setAvailableSlot(false);
-					output += String.format("%-10s %-20s %-50s %-15s %-20s\n", "BIKER", "CONTACT NUMBER", "EVENT NAME", "DATE", "AVAILABLE SLOT");
-					output += String.format("%-10s %-20d %-50s %-15s %-20s\n", i.getName(), i.getContactNum(), i.getEventName(), i.getDate(), C206_CaseStudy.showAvailability(i.getAvailableSlot()));
-				}else {
-					output += String.format("%-10s %-20s %-50s %-15s %-20s\n", "BIKER", "CONTACT NUMBER", "EVENT NAME", "DATE", "AVAILABLE SLOT");
-					output += String.format("%-10s %-20d %-50s %-15s %-20s\n", i.getName(), i.getContactNum(), i.getEventName(), i.getDate(), C206_CaseStudy.showAvailability(i.getAvailableSlot()));
-				}		
 			}
 		}
-		
-		if(CheckEvent == false) {
-			System.out.println("No Such Event!");
-		}else if(FindEvent == 1 ){
-			C206_CaseStudy.setHeader("The Little Pore of Singapore Cycling Tour");
-			System.out.println(output);
-		}else if(FindEvent == 2) {
-			C206_CaseStudy.setHeader("Cycle To Makan! @ Gardens By The Bay");
-			System.out.println(output);
-		}else if(FindEvent == 2) {
-			C206_CaseStudy.setHeader("National Bikers Weekend 2023");
-			System.out.println(output);
-		}
+		System.out.println(output);
 	}
 
-	
+	//================================= Option UsersRegisterEvent (CRUD - Create)=================================
+	public static void addUser(ArrayList<UserAcct> UserList, UserAcct user) {
+		UserAcct Info;
+		for(int i = 0; i < UserList.size(); i++) {
+			Info = UserList.get(i);
+			if (Info.getName().equalsIgnoreCase(user.getName()) )
+				return;
+		}
+		if ((user.getName().isEmpty()) || (user.getContactNum() == 0) || (user.getUserID().isEmpty()) || (user.getUserPass() == 0)) {
+			return;
 
-	//================================= Option 2 Add (CRUD - Create)=================================
-	public static void inputDetails(UserAcct i) {
+		}
+		UserList.add(user);
 
-		int option = Helper.readInt("Enter option to choose the Event > ");
+	}
+
+	public static void RegisterEvents(UserAcct i, ArrayList<String> eventList) {
+		String Chooseevent = Helper.readString("Enter the event name > ");
 		String Date = Helper.readString("Enter a date > ");
 		boolean Checkoption = false;
-		
 
-		if(option == 1) {
-			Checkoption = true;
-			if(option1 != 5) {
-				i.setEventName("The Little Pore of Singapore Cycling Tour");
-				i.setDate(Date);
-				System.out.println("Register Successful!");
-				option1++;
-			}else {
-				System.out.println("The slot is full!");
+		if(i.getEventName().equalsIgnoreCase("")) {
+			for(String event : eventList) {
+				if(Chooseevent.equalsIgnoreCase(event)) {
+					Checkoption = true;
+					i.setEventName(event);
+					i.setDate(Date);
+					System.out.println("Register Successful!");
+				}
 			}
-			
-		}else if(option == 2) {
-			Checkoption = true;
-			if(option2 != 5) {
-				i.setEventName("Cycle To Makan! @ Gardens By The Bay");
-				i.setDate(Date);
-				option2++;
-				System.out.println("Register Successful!");
-			}else {
-				System.out.println("The slot is full!");
-			}
-			
-		}else if(option == 3) {
-			Checkoption = true;
-			if(option3 != 5) {
-				i.setEventName("National Bikers Weekend 2023");
-				i.setDate(Date);
-				option3++;
-				System.out.println("Register Successful!");
-			}else {
-				System.out.println("The slot is full!");
-			}
-						
 		}
-		
-
 		if(Checkoption == false) {
-			System.out.println("Invalid option");
+			System.out.println("No Such Event!");
 		}
+
+
 	}
 
-	//================================= Option 3 delete (CRUD - Create)=================================
-	public static void deleteEvent(UserAcct i) {
-
-		String output = "";
-		output += String.format("%-10s %-20s %-50s %-15s %-20s\n", "BIKER", "CONTACT NUMBER", "EVENT NAME", "DATE", "AVAILABLE SLOT");
-		output += String.format("%-10s %-20d %-50s %-15s %-20s\n", i.getName(), i.getContactNum(), i.getEventName(), i.getDate(), C206_CaseStudy.showAvailability(i.getAvailableSlot()));		
-		System.out.println(output);
+	//================================= Option UserCancelRegister (CRUD - delete)=================================
+	public static void checkDelteEvent(UserAcct user) {
+		if (!user.getEventName().equalsIgnoreCase("") && !user.getDate().equalsIgnoreCase("")) {
+			user.setEventName("");
+			user.setDate("");
+			return;
+			}else {
+				return;
+			}
+		}
+	
+		public static void deleteEvent(UserAcct i) {
+	
+			String output = "";
+			output += String.format("%-10s %-20s %-50s %-15s\n", "BIKER", "CONTACT NUMBER", "EVENT NAME", "DATE");
+			output += String.format("%-10s %-20d %-50s %-15s\n", i.getName(), i.getContactNum(), i.getEventName(), i.getDate());
+			System.out.println(output);
 
 		if(i.getEventName().length() > 0) {
-			if(i.getEventName().equalsIgnoreCase("The Little Pore of Singapore Cycling Tour")) {
-				char DeleteEvent = Helper.readChar("Do you want to cancel registration? (Y/N) > ");
-				if(DeleteEvent == 'Y' || DeleteEvent == 'y') {
-					i.setEventName("");
-					i.setDate("");
-					option1--;
-					System.out.println("Cancel Successful!");
-				}else {
-					System.out.println("Cancel Not Successful!");
-				}
-			}else if(i.getEventName().equalsIgnoreCase("Cycle To Makan! @ Gardens By The Bay")) {
-				char DeleteEvent = Helper.readChar("Do you want to cancel registration? (Y/N) > ");
-				if(DeleteEvent == 'Y' || DeleteEvent == 'y') {
-					i.setEventName("");
-					i.setDate("");
-					option2--;
-					System.out.println("Cancel Successful!");
-				}else {
-					System.out.println("Cancel Not Successful!");
-				}
-			}else if(i.getEventName().equalsIgnoreCase("National Bikers Weekend 2023")) {
-				char DeleteEvent = Helper.readChar("Do you want to cancel registration? (Y/N) > ");
-				if(DeleteEvent == 'Y' || DeleteEvent == 'y') {
-					i.setEventName("");
-					i.setDate("");
-					option3--;
-					System.out.println("Cancel Successful!");
-				}else {
-					System.out.println("Cancel Not Successful!");
-				}
+			char DeleteEvent = Helper.readChar("Do you want to cancel registration? (Y/N) > ");
+			if(DeleteEvent == 'Y' || DeleteEvent == 'y') {
+				i.setEventName("");
+				i.setDate("");
+				System.out.println("Cancel Successful!");
+			}else {
+				System.out.println("Cancel Not Successful!");
 			}
-			
+
 		}else if(i.getEventName().length() < 1) {
 			System.out.println("You don't register for any event yet!");
 		}
 
-
 	}
-
 }
 
 
