@@ -5,7 +5,6 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 public class C206_CaseStudyTest {
-
 	private UserAcct User1;
 	private UserAcct User2;
 	private UserAcct User3;

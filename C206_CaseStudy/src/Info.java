@@ -1,12 +1,11 @@
-
 public class Info {
 	private String name;
 	private int ContactNum;
 	private String eventName;
 	private String Date;
 	private boolean isAvailableSlot;
-	
-	
+
+
 	public Info(String name, int ContactNum) {
 		this.name = name;
 		this.ContactNum  = ContactNum;
@@ -23,11 +22,11 @@ public class Info {
 		this.isAvailableSlot = true;
 	}
 
-	
+
 
 	public String showAvailability(boolean isAvailableSlot) {
 		String avail;
-		
+
 		if(isAvailableSlot == true) {
 			avail = "Yes";
 		}else {
@@ -59,7 +58,7 @@ public class Info {
 	public void setDate(String date) {
 		Date = date;
 	}
-	
+
 	public boolean getAvailableSlot() {
 		return isAvailableSlot;
 	}
@@ -67,6 +66,6 @@ public class Info {
 	public void setAvailableSlot(boolean isAvailableSlot) {
 		this.isAvailableSlot = isAvailableSlot;
 	}
-	
-	
+
+
 }

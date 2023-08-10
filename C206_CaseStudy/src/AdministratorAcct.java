@@ -1,6 +1,7 @@
 
 public class AdministratorAcct extends Info implements Database{
 
+	
 	private String AdminID;
 	private int AdminPass;	
 
@@ -10,6 +11,7 @@ public class AdministratorAcct extends Info implements Database{
 		this.AdminPass = AdminPass;
 	}
 
+	
 	public String getAdminID() {
 		return AdminID;
 	}

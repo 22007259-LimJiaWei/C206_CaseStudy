@@ -9,7 +9,7 @@ public class UserAcct extends Info implements Database{
 		this.userID = userID;
 		this.userPass = userPass;
 	}
-
+	
 	public String getUserID() {
 		return userID;
 	}
