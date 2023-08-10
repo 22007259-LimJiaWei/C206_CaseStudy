@@ -16,7 +16,6 @@ public class C206_CaseStudy {
 		eventList.add("Cycle To Makan! @ Gardens By The Bay");
 		eventList.add("National Bikers Weekend 2023");
 
-
 		int option = -1;
 
 		while (option != 3) {
