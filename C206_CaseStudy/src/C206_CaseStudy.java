@@ -16,9 +16,9 @@ public class C206_CaseStudy {
 		eventList.add("National Bikers Weekend 2023");
 
 		int option = 0;
-
+		
 		while (option != 3) {
-
+			
 			C206_CaseStudy.AcctTypeMenu();
 			option = Helper.readInt("Enter an option > ");
 
@@ -39,9 +39,7 @@ public class C206_CaseStudy {
 			}else {
 				System.out.println("Invalid option");
 			}
-
 		}
-
 	}
 
 	private static void runUserProcess(UserAcct loginAcct, ArrayList<String> eventList) {
@@ -64,7 +62,6 @@ public class C206_CaseStudy {
 				System.out.println("Invalid option");
 			}
 		}
-
 	}
 
 	private static UserAcct getUserLoginAcc(ArrayList<UserAcct> UserList) {
