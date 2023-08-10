@@ -13,6 +13,7 @@ public class C206_CaseStudyTest {
 	private ArrayList<UserAcct> UserList;
 	private ArrayList<String> evenList;
 
+	
 	@Before
 	public void setUp() throws Exception {
 		// Create a new UserAcct object for each test case

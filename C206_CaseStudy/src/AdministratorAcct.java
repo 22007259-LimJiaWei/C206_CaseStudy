@@ -1,7 +1,6 @@
 
 public class AdministratorAcct extends Info implements Database{
 
-	
 	private String AdminID;
 	private int AdminPass;	
 

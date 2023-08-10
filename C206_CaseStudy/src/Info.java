@@ -5,7 +5,7 @@ public class Info {
 	private String Date;
 	private boolean isAvailableSlot;
 
-
+	
 	public Info(String name, int ContactNum) {
 		this.name = name;
 		this.ContactNum  = ContactNum;

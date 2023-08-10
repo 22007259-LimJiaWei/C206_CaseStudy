@@ -1,6 +1,7 @@
 
 public class UserAcct extends Info implements Database{
 	
+	
 	private String userID;
 	private int userPass;
 	
