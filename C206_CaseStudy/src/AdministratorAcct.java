@@ -9,7 +9,6 @@ public class AdministratorAcct extends Info implements Database{
 		this.AdminID = AdminID;
 		this.AdminPass = AdminPass;
 	}
-
 	
 	public String getAdminID() {
 		return AdminID;

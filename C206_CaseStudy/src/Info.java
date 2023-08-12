@@ -3,7 +3,6 @@ public class Info {
 	private int ContactNum;
 	private String eventName;
 	private String Date;
-	private boolean isAvailableSlot;
 
 	
 	public Info(String name, int ContactNum) {
@@ -11,7 +10,6 @@ public class Info {
 		this.ContactNum  = ContactNum;
 		this.eventName = "";
 		this.Date = "";
-		this.isAvailableSlot = true;
 	}
 
 	public Info(String name, int ContactNum, String eventName, String Date) {
@@ -19,7 +17,6 @@ public class Info {
 		this.ContactNum  = ContactNum;
 		this.eventName = eventName;
 		this.Date = Date;
-		this.isAvailableSlot = true;
 	}
 
 
@@ -58,14 +55,4 @@ public class Info {
 	public void setDate(String date) {
 		Date = date;
 	}
-
-	public boolean getAvailableSlot() {
-		return isAvailableSlot;
-	}
-
-	public void setAvailableSlot(boolean isAvailableSlot) {
-		this.isAvailableSlot = isAvailableSlot;
-	}
-
-
 }
