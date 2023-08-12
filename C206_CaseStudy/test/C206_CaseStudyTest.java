@@ -1,4 +1,4 @@
-import static org.junit.Assert.*;
+	import static org.junit.Assert.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,9 +11,7 @@ public class C206_CaseStudyTest {
 	private UserAcct User4;
 	private UserAcct User5;
 	private ArrayList<UserAcct> UserList;
-	private ArrayList<String> evenList;
 
-	
 	@Before
 	public void setUp() throws Exception {
 		// Create a new UserAcct object for each test case
@@ -25,6 +23,7 @@ public class C206_CaseStudyTest {
 		User5 = new UserAcct("Ali", 12345678, "", "", "Ali", 1234);
 
 		UserList = new ArrayList<UserAcct>();
+		
 
 	}
 
@@ -100,21 +99,21 @@ public class C206_CaseStudyTest {
 		// boundary
 		String allCamcorder = C206_CaseStudy.retrieveAllEvent(UserList);
 		String testOutput = "";
-		assertEquals("Check that ViewAllCamcorderlist", testOutput, allCamcorder);
+		assertEquals("Check that viewAllEvent is empty", testOutput, allCamcorder);
 
 		// Given an empty list, after adding 2 items, test if the size of the list is 2
 		// - normal
 		C206_CaseStudy.addUser(UserList, User1);
 		C206_CaseStudy.addUser(UserList, User2);
-		assertEquals("Test that Camcorder arraylist size is 1", 2, UserList.size());
+		assertEquals("Test that UserList arraylist size is 1", 2, UserList.size());
 
 		// test if the expected output string same as the list of UserAcct retrieved
 		// from the SourceCentre
 		allCamcorder = C206_CaseStudy.retrieveAllEvent(UserList);
-		testOutput = String.format("%-10s %-30s %-10s %-10s %-20s\n", "Alice", 23456789, "The Little Pore of Singapore Cycling Tour", "07/08/2023", "Alice");
-		testOutput += String.format("%-10s %-30s %-10s %-10s %-20s\n", "Cheng", 34567891, "National Bikers Weekend 2023", "15/08/2023", "Cheng");
+		testOutput = String.format("%-10s %-30s %-10s %-10s\n", "Alice", 23456789, "The Little Pore of Singapore Cycling Tour", "07/08/2023");
+		testOutput += String.format("%-10s %-30s %-10s %-10s\n", "Cheng", 34567891, "National Bikers Weekend 2023", "15/08/2023");
 
-		assertEquals("Test that ViewAllCamcorderlist", testOutput, allCamcorder);
+		assertEquals("Test that viewAllEvent is correct", testOutput, allCamcorder);
 	}
 
 	@Test
@@ -123,8 +122,8 @@ public class C206_CaseStudyTest {
 		// Get the first user from the list
 		C206_CaseStudy.checkDelteEvent(User1);
 
-		assertEquals("Event name should be empty after deletion", "", User1.getEventName());
-		assertEquals("Date should be empty after deletion", "", User1.getDate());
+		assertEquals("Check that event name should be empty after deletion", "", User1.getEventName());
+		assertEquals("Check that Date should be empty after deletion", "", User1.getDate());
 	}
 
 	@Test
@@ -133,8 +132,18 @@ public class C206_CaseStudyTest {
 		// Get the first user from the list
 		C206_CaseStudy.checkDelteEvent(User5);
 
-		assertEquals("Event name should be empty after deletion", "", User5.getEventName());
-		assertEquals("Date should be empty after deletion", "", User5.getDate());
+		assertEquals("Check that Event name is Null to deletiom", "", User5.getEventName());
+		assertEquals("Check that Date is Null to deletion", "", User5.getDate());
+	}
+	
+	@Test
+	public void testInvalidDeleteEvent() {
+		// Test deleting an event when the user has no register for an event
+		// Get the first user from the list
+		C206_CaseStudy.checkDelteEvent(User4);
+
+		assertEquals("Check that Event name is Invalid to delete to deletion", "", User4.getEventName());
+		assertEquals("Check that Date is Null to deletion", "", User4.getDate());
 	}
 
 	@After

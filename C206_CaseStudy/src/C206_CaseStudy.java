@@ -2,6 +2,8 @@ import java.util.ArrayList;
 
 public class C206_CaseStudy {
 
+	private static final int OPTION_QUIT = 3;
+
 	public static void main(String[] args) {
 
 		ArrayList<UserAcct> UserList = new ArrayList<UserAcct>();
@@ -17,7 +19,7 @@ public class C206_CaseStudy {
 
 		int option = 0;
 
-		while (option != 3) {
+		while (option != OPTION_QUIT) {
 
 			C206_CaseStudy.AcctTypeMenu();
 			option = Helper.readInt("Enter an option > ");
@@ -56,7 +58,7 @@ public class C206_CaseStudy {
 			} else if (Useroption == 2) {				
 				deleteEvent(loginAcct);
 
-			} else if (Useroption == 3) {		
+			}else if(Useroption == 3){
 				System.out.println("Logging out.");
 			}else {
 				System.out.println("Invalid option");
@@ -86,7 +88,7 @@ public class C206_CaseStudy {
 	private static void runAdminProcess(ArrayList<UserAcct> UserList, ArrayList<String> eventList) {
 		int Adminoption = 0;
 
-		while (Adminoption != 5) {
+		while (Adminoption != 2) {
 			Adminmenu();
 			Adminoption = Helper.readInt("Enter choice > ");
 
@@ -94,21 +96,8 @@ public class C206_CaseStudy {
 				C206_CaseStudy.EventMenu(eventList);
 				C206_CaseStudy.viewAllEvent(UserList, eventList);
 
-			} else if (Adminoption == 2) {		
-				UserAcct UA = inputUserAcct();
-				C206_CaseStudy1.addUserAcct(UserList, UA);
-				System.out.println("Added Successful!");
-
-			}else if(Adminoption == 3){
-				C206_CaseStudy1.viewAllUserList(UserList);
-
-			}else if(Adminoption == 4){		
-				String name = Helper.readString("Enter Name > ");
-				C206_CaseStudy1.checkdeleteUserAcct(UserList, name);
-
-			}else if(Adminoption == 5){
+			}else if(Adminoption == 2){
 				System.out.println("Logging out.");
-
 			}else {
 				System.out.println("Invalid option");
 			}
@@ -132,8 +121,6 @@ public class C206_CaseStudy {
 		if(checkAcc == false) {
 			System.out.println("Incorrect Admin ID or Password");
 		}
-
-
 		return loginAcct;
 	}
 
@@ -147,6 +134,10 @@ public class C206_CaseStudy {
 	}
 
 	public static void Usermenu() {
+		showUserMenu();
+	}
+
+	public static void showUserMenu() {
 		C206_CaseStudy.setHeader("BIKERS COMMUNITY PORTAL");
 		System.out.println("1. Register Event");
 		System.out.println("2. Cancel Registration Event");
@@ -166,12 +157,13 @@ public class C206_CaseStudy {
 	}
 
 	public static void Adminmenu() {
+		showAdminMenu();
+	}
+
+	public static void showAdminMenu() {
 		C206_CaseStudy.setHeader("BIKERS COMMUNITY PORTAL");
 		System.out.println("1. View Event List");
-		System.out.println("2. Add a new User ");
-		System.out.println("3. View all Users");
-		System.out.println("4. Delete an exisiting user");
-		System.out.println("5. Quit");
+		System.out.println("2. Quit");
 		Helper.line(115, "-");
 	}
 
@@ -181,19 +173,18 @@ public class C206_CaseStudy {
 		Helper.line(115, "-");
 	}
 
-
-	public static int option1 = 0;
-	public static int option2 = 0;
-	public static int option3 = 0;
-
 	//================================= Option ViewAllUsersRegisterEvent (CRUD - Read) =================================
 	public static String retrieveAllEvent(ArrayList<UserAcct> UserList) {
 		String output = "";
 		for (int i = 0; i < UserList.size(); i++) {
 
-			output += String.format("%-10s %-30s %-10s %-10s %-20s\n", UserList.get(i).getName(),
-					UserList.get(i).getContactNum(), UserList.get(i).getEventName(), UserList.get(i).getDate(),
-					UserList.get(i).getUserID(), UserList.get(i).getUserPass());
+			String name = UserList.get(i).getName();
+			int contactNum = UserList.get(i).getContactNum();
+			String eventName = UserList.get(i).getEventName();
+			String date = UserList.get(i).getDate();
+			output += String.format("%-10s %-30s %-10s %-10s\n", name,
+					contactNum, eventName, date
+					);
 
 		}
 		return output;
@@ -258,10 +249,11 @@ public class C206_CaseStudy {
 		if (!user.getEventName().equalsIgnoreCase("") && !user.getDate().equalsIgnoreCase("")) {
 			user.setEventName("");
 			user.setDate("");
-			return;
 		}else {
+			System.out.println("Nothing to Delete");
 			return;
 		}
+		return;
 	}
 
 	public static void deleteEvent(UserAcct i) {
@@ -284,71 +276,6 @@ public class C206_CaseStudy {
 			System.out.println("You don't register for any event yet!");
 		}
 
-	}
-
-	//================================= Option addUser (CRUD - Read) =================================
-	public static UserAcct inputUserAcct() {
-		String name = Helper.readString("Enter Name > ");
-		int contactNum = Helper.readInt("Enter Contact Number > ");
-		String userID  = Helper.readString("Enter UserID > ");
-		int userpass  = Helper.readInt("Enter UserPass > ");
-		UserAcct UA = new UserAcct(name, contactNum,"","", userID, userpass);
-		return UA;
-	}
-	public static void addUserAcct(ArrayList<UserAcct> UserList, UserAcct UA) {
-		for(int i = 0; i < UserList.size(); i++) {
-			if (UserList.get(i).getName().equalsIgnoreCase(UA.getName()) )
-				return;
-		}
-		if ((UA.getName().isEmpty()) || UA.getContactNum() == 0) {
-			return;
-		}
-		UserList.add(UA) ;
-	}
-	//================================= Option viewUser (CRUD - Create)=================================
-	public static String retrieveAllUserAcct(ArrayList<UserAcct> UserList) {
-		String output = "";
-		for (int i = 0; i < UserList.size(); i++) {
-			output += String.format("%-10s %-15d %-10s %-10s\n", UserList.get(i).getName(), UserList.get(i).getContactNum(),
-					UserList.get(i).getEventName(), UserList.get(i).getDate());
-		}
-
-		return output;
-
-	}
-	public static void viewAllUserList(ArrayList<UserAcct> UserList) {
-		C206_CaseStudy1.setHeader("UserLIST");
-		String output = String.format("%-10s %-15s %-10s %-10s\n", "Name", "ContactNum", "Event Name", "Date");
-		output += retrieveAllUserAcct(UserList);	
-		System.out.println(output);
-
-	}
-
-	//================================= Option deleteUser (CRUD - Create)=================================
-	public static void checkdeleteUserAcct(ArrayList<UserAcct> UserList, String name) {  
-		String checkname = name.trim();
-		for (int i = 0; i < UserList.size(); i++) {
-			if (checkname.equalsIgnoreCase(UserList.get(i).getName())) {      
-				UserList.remove(UserList.get(i));
-				System.out.println("User has been deleted");
-			}
-		}
-		return;
-	}
-	public static boolean deleteUserAcct(ArrayList <UserAcct> UserList, String name) {
-		//String output = checkdeleteUserAcct(UserList);
-		//String checkname = name.trim();
-		for (int i = 0; i < UserList.size(); i++) {
-			if (name.equalsIgnoreCase(UserList.get(i).getName())) {      
-				UserList.remove(UserList.get(i));
-				System.out.println("User has been deleted");
-				return(true);
-			}else {
-				System.out.println("User no deleted");
-				return(false);
-			}
-		}
-		return(false);
 	}
 }
 
