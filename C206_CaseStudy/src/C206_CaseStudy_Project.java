@@ -397,9 +397,9 @@ public class C206_CaseStudy_Project {
 	public static boolean deleteUserAcct(ArrayList <UserAcct> UserList, String name) {
 		//String output = checkdeleteUserAcct(UserList);
 		//String checkname = name.trim();
-		for (int i = 0; i < UserList.size(); i++) {
-			if (name.equalsIgnoreCase(UserList.get(i).getName())) {      
-				UserList.remove(UserList.get(i));
+		for (UserAcct user : UserList) {
+			if (name.equalsIgnoreCase(user.getName())) {      
+				UserList.remove(user);
 				System.out.println("User has been deleted");
 				return(true);
 			}else {
